@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Payments</title>
+    <link rel="stylesheet" th:href="@{/css/payments.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <p>VNPAY DEMO</p>
+            <a href="http://localhost:8080/api/vnp/payments">Danh sách</a>
+            <a href="http://localhost:8080/api/vnp/createOrder">Tạo mới</a>
+            <a href="http://localhost:8080/api/vnp/createRefund">Hoàn trả</a>
+            <a href="http://localhost:8080/api/vnp/createQuery">Truy vấn</a>
+        </div>
+
+        <h3>Danh sách đơn hàng</h3>
+
+        <div class="payment">
+            <div class="pager">
+                <div th:if="${sort.totalPages < 6}">
+                    <th:block th:each="page : ${#numbers.sequence(1, sort.totalPages)}">
+                        <span th:if="${page == sort.pageNo}" th:text="${page}" class="current"></span>
+                        <a th:unless="${page == sort.pageNo}" th:href="@{'http://localhost:8080/api/vnp/payments?pageNo='
+                            + ${page} + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir} + '&pageSearch=' + ${sort.search}}" th:text="${page}"></a>
+                    </th:block>
+                </div>
+
+                <div th:if="${sort.totalPages > 5}">
+                    <div th:if="${sort.pageNo < 4}">
+                        <th:block th:each="page : ${#numbers.sequence(1, 5)}">
+                            <span th:if="${page == sort.pageNo}" th:text="${page}" class="current"></span>
+                            <a th:unless="${page == sort.pageNo}" th:href="@{'http://localhost:8080/api/vnp/payments?pageNo='
+                                + ${page} + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir} + '&pageSearch=' + ${sort.search}}" th:text="${page}"></a>
+                        </th:block>
+                        <a th:href="@{'http://localhost:8080/api/vnp/payments?pageNo='
+                            + ${sort.totalPages} + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir} + '&pageSearch=' + ${sort.search}}">>></a>
+                    </div>
+
+                    <div th:if="${sort.pageNo > 3 and sort.pageNo < (sort.totalPages - 2)}">
+                        <a th:href="@{'http://localhost:8080/api/vnp/payments?pageNo=1'
+                            + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir} + '&pageSearch=' + ${sort.search}}"><<</a>
+                        <th:block th:each="page : ${#numbers.sequence(sort.pageNo - 2, sort.pageNo + 2)}">
+                            <span th:if="${page == sort.pageNo}" th:text="${page}" class="current"></span>
+                            <a th:unless="${page == sort.pageNo}" th:href="@{'http://localhost:8080/api/vnp/payments?pageNo='
+                                + ${page} + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir} + '&pageSearch=' + ${sort.search}}" th:text="${page}"></a>
+                        </th:block>
+                        <a th:href="@{'http://localhost:8080/api/vnp/payments?pageNo='
+                            + ${sort.totalPages} + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir} + '&pageSearch=' + ${sort.search}}">>></a>
+                    </div>
+
+                    <div th:if="${sort.pageNo >= (sort.totalPages - 2)}">
+                        <a th:href="@{'http://localhost:8080/api/vnp/payments?pageNo=1'
+                            + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir} + '&pageSearch=' + ${sort.search}}"><<</a>
+                        <th:block th:each="page : ${#numbers.sequence(sort.totalPages - 4, sort.totalPages)}">
+                            <span th:if="${page == sort.pageNo}" th:text="${page}" class="current"></span>
+                            <a th:unless="${page == sort.pageNo}" th:href="@{'http://localhost:8080/api/vnp/payments?pageNo='
+                                + ${page} + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir} + '&pageSearch=' + ${sort.search}}" th:text="${page}"></a>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sorter">
+                <form id="sortForm" action="/api/vnp/payments" method="get">
+                    <label>Sắp xếp theo: </label>
+                    <select name="pageBy" onchange="submitSortForm()">
+                        <option value="id" th:selected="${sort.sortBy == 'id'}">Mã</option>
+                        <option value="amount" th:selected="${sort.sortBy == 'amount'}">Số tiền</option>
+                    </select>
+
+                    <label>Thứ tự: </label>
+                    <select name="pageDir" onchange="submitSortForm()">
+                        <option value="desc" th:selected="${sort.sortDir == 'desc'}">Giảm dần</option>
+                        <option value="asc" th:selected="${sort.sortDir == 'asc'}">Tăng dần</option>
+                    </select>
+
+                    <div class="search">
+                        <label>Tìm kiếm:</label>
+                        <input type="number" id="searchInput" name="pageSearch" th:value="${sort.search}" />
+                        <button type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <table>
+                <tr class="header">
+                    <td>Mã</td>
+                    <td>Số tiền</td>
+                    <td>Nội dung</td>
+                    <td>Ngày tạo</td>
+                    <td>Tình trạng</td>
+                    <td>IpAddr</td>
+                </tr>
+
+                <tr th:each = "payment: ${payments}" class="details">
+                    <td th:text="${payment.id}"></td>
+                    <td th:text="${payment.amount}"></td>
+                    <td th:text="${payment.transactionInfo}"></td>
+                    <td th:text="${payment.dateCreate}"></td>
+                    <td th:text="${payment.status}"></td>
+                    <td th:text="${payment.ipAddr}"></td>
+                </tr>
+
+            </table>
+
+            <div class="pager">
+                <div th:if="${sort.totalPages < 6}">
+                    <th:block th:each="page : ${#numbers.sequence(1, sort.totalPages)}">
+                        <span th:if="${page == sort.pageNo}" th:text="${page}" class="current"></span>
+                        <a th:unless="${page == sort.pageNo}" th:href="@{'http://localhost:8080/api/vnp/payments?pageNo='
+                            + ${page} + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir}
+                            + '&pageSearch=' + ${sort.search}}" th:text="${page}"></a>
+                    </th:block>
+                </div>
+
+                <div th:if="${sort.totalPages > 5}">
+                    <div th:if="${sort.pageNo < 4}">
+                        <th:block th:each="page : ${#numbers.sequence(1, 5)}">
+                            <span th:if="${page == sort.pageNo}" th:text="${page}" class="current"></span>
+                            <a th:unless="${page == sort.pageNo}" th:href="@{'http://localhost:8080/api/vnp/payments?pageNo='
+                                + ${page} + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir}
+                                + '&pageSearch=' + ${sort.search}}" th:text="${page}"></a>
+                        </th:block>
+                        <a th:href="@{'http://localhost:8080/api/vnp/payments?pageNo='
+                            + ${sort.totalPages} + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir}
+                            + '&pageSearch=' + ${sort.search}}">>></a>
+                    </div>
+
+                    <div th:if="${sort.pageNo > 3 and sort.pageNo < (sort.totalPages - 2)}">
+                        <a th:href="@{'http://localhost:8080/api/vnp/payments?pageNo=1'
+                            + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir} + '&pageSearch='
+                            + ${sort.search}}"><<</a>
+                        <th:block th:each="page : ${#numbers.sequence(sort.pageNo - 2, sort.pageNo + 2)}">
+                            <span th:if="${page == sort.pageNo}" th:text="${page}" class="current"></span>
+                            <a th:unless="${page == sort.pageNo}" th:href="@{'http://localhost:8080/api/vnp/payments?pageNo='
+                                + ${page} + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir}
+                                + '&pageSearch=' + ${sort.search}}" th:text="${page}"></a>
+                        </th:block>
+                        <a th:href="@{'http://localhost:8080/api/vnp/payments?pageNo='
+                            + ${sort.totalPages} + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir}
+                            + '&pageSearch=' + ${sort.search}}">>></a>
+                    </div>
+
+                    <div th:if="${sort.pageNo >= (sort.totalPages - 2)}">
+                        <a th:href="@{'http://localhost:8080/api/vnp/payments?pageNo=1'
+                            + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir}
+                            + '&pageSearch=' + ${sort.search}}"><<</a>
+                        <th:block th:each="page : ${#numbers.sequence(sort.totalPages - 4, sort.totalPages)}">
+                            <span th:if="${page == sort.pageNo}" th:text="${page}" class="current"></span>
+                            <a th:unless="${page == sort.pageNo}" th:href="@{'http://localhost:8080/api/vnp/payments?pageNo='
+                                + ${page} + '&pageBy=' + ${sort.sortBy} + '&pageDir=' + ${sort.sortDir}
+                                + '&pageSearch=' + ${sort.search}}" th:text="${page}"></a>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>VNPAY 2025</p>
+        </div>
+    </div>
+
+    <script>
+        // Hàm submit form
+        function submitSortForm() {
+            sortForm.submit();
+        }
+    </script>
+</body>
+</html>

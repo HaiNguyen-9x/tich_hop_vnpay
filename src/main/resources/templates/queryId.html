@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Query</title>
+    <link rel="stylesheet" th:href="@{/css/queryId.css}">
+</head>
+<body>
+  <form id="queryForm" method="get" th:action="@{/api/vnp/query}">
+    <div class="container">
+      <div class="nav">
+        <p>VNPAY DEMO</p>
+        <a href="http://localhost:8080/api/vnp/payments">Danh sách</a>
+        <a href="http://localhost:8080/api/vnp/createOrder">Tạo mới</a>
+        <a href="http://localhost:8080/api/vnp/createRefund">Hoàn trả</a>
+        <a href="http://localhost:8080/api/vnp/createQuery">Truy vấn</a>
+      </div>
+
+      <h3>Truy vấn giao dịch</h3>
+
+      <div class="getId">
+        <label>Nhập mã thanh toán: </label>
+        <input id="queryId" type="number" th:field="${queryDto.paymentId}"  class="text-16px padding-8-12 width-100
+            text-box-color border-radius border-box"/>
+        <span id="idError" style="font-size: 14.4px; color: red;"></span>
+      </div>
+
+      <button type="submit" class="text-16px">Xác nhận</button>
+
+      <div class="footer text-14px">
+        <p>VNPAY 2025</p>
+      </div>
+    </div>
+  </form>
+
+  <script src="/js/query.js"></script>
+</body>
+</html>

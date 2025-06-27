@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Refund</title>
+    <link rel="stylesheet" th:href="@{/css/refund.css}">
+
+</head>
+<body>
+    <form id="refundForm" method="get" th:action="@{/api/vnp/refund}" th:object="${refundDto}">
+        <div class="container">
+            <div class="nav">
+                <p>VNPAY DEMO</p>
+                <a href="http://localhost:8080/api/vnp/payments">Danh sách</a>
+                <a href="http://localhost:8080/api/vnp/createOrder">Tạo mới</a>
+                <a href="http://localhost:8080/api/vnp/createRefund">Hoàn trả</a>
+                <a href="http://localhost:8080/api/vnp/createQuery">Truy vấn</a>
+            </div>
+
+            <h3>Hoàn trả tiền</h3>
+
+            <div class="refund-details">
+                <div class="form-group">
+                    <label class="text-14px">Mã thanh toán</label>
+                    <input id="paymentId" type="number"  th:field="*{id}"  class="text-16px padding-8-12 width-100
+                        text-box-color border-radius border-box"/>
+                    <span id="idError" style="font-size: 14.4px; color: red;"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="text-14px">Loại hoàn trả</label>
+                    <select id="refundType" th:field="*{transactionType}"
+                            class="text-16px padding-8-12 width-100 text-box-color border-radius">
+                        <option th:value="'03'">Hoàn trả một phần</option>
+                        <option th:value="'02'">Hoàn trả toàn phần</option>
+                    </select>
+                </div>
+
+                <div id="refundAmount" class="form-group">
+                    <label class="text-14px">Số tiền</label>
+                    <input  type="number" th:field="*{amount}"  class="text-16px padding-8-12 width-100
+                        text-box-color border-radius border-box"/>
+                    <span id="amountError" style="font-size: 14.4px; color: red;"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="text-14px">Người khởi tạo hoàn tiền</label>
+                    <input id="createBy" type="text" th:field="*{createBy}"  class="text-16px padding-8-12 width-100
+                        text-box-color border-radius border-box"/>
+                    <span id="createByError" style="font-size: 14.4px; color: red;"></span>
+                </div>
+
+                <button type="submit" class="text-16px">Xác nhận hoàn trả</button>
+            </div>
+
+            <div class="footer text-14px">
+                <p>VNPAY 2025</p>
+            </div>
+        </div>
+    </form>
+
+    <script src="/js/refund.js"></script>
+
+</body>
+</html>

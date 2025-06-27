@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Response</title>
+  <link rel="stylesheet" th:href="@{/css/refundResponse.css}">
+</head>
+<body>
+<div class="container">
+  <h1 th:text="${refundResponseDto.status}"> </h1>
+  <div class="row">
+    <table>
+      <tr>
+        <td><strong>Name</strong></td>
+        <td><strong>Value</strong></td>
+        <td><strong>Description</strong></td>
+      </tr>
+
+      <tr class="grey-row">
+        <td>Merchant ID</td>
+        <td>JJQQFNTI</td>
+        <td>Được cấp bởi VNPAY</td>
+      </tr>
+
+      <tr>
+        <td>Merchant Name</td>
+        <td th:text="${refundResponseDto.merchantName}"></td>
+        <td>Tên Website Merchant</td>
+      </tr>
+
+      <tr class="grey-row">
+        <td>Create By</td>
+        <td th:text="${refundResponseDto.createBy}"></td>
+        <td>Người tạo yêu cầu hoàn tiền</td>
+      </tr>
+
+      <tr>
+        <td>Amount</td>
+        <td th:text="${refundResponseDto.amount}"></td>
+        <td>Số tiền đã thanh toán</td>
+      </tr>
+
+      <tr class="grey-row">
+        <td>Transaction Type</td>
+        <td th:text="${refundResponseDto.transactionType}"></td>
+        <td>Loại yêu cầu</td>
+      </tr>
+
+      <tr>
+        <td>Refund Amount</td>
+        <td th:text="${refundResponseDto.refundAmount}"></td>
+        <td>Số tiền yêu cầu hoàn lại</td>
+      </tr>
+
+      <tr class="grey-row">
+        <td>Current Code</td>
+        <td>VND</td>
+        <td>Đơn vị tiền tệ được thanh toán</td>
+      </tr>
+
+      <tr>
+        <td>Transaction Number</td>
+        <td th:text="${refundResponseDto.transactionNumber}"></td>
+        <td>Mã GD trên cổng thanh toán</td>
+      </tr>
+
+      <tr class="grey-row">
+        <td>Transaction Response Code</td>
+        <td th:text="${refundResponseDto.transactionResponseCode}"></td>
+        <td>Thông báo từ cổng thanh toán</td>
+      </tr>
+
+      <tr>
+        <td>Transaction Status</td>
+        <td th:text="${refundResponseDto.transactionStatus}"></td>
+        <td>Trạng thái yêu cầu</td>
+      </tr>
+
+
+      <tr class="grey-row">
+        <td>Bank</td>
+        <td th:text="${refundResponseDto.bank}"></td>
+        <td>Ngân hàng GD</td>
+      </tr>
+
+      <tr>
+        <td>Date</td>
+        <td th:text="${refundResponseDto.createDate}"></td>
+        <td>Ngày yêu cầu</td>
+      </tr>
+    </table>
+  </div>
+  <p>
+    <a href="http://localhost:8080/api/vnp/payments">Về danh sách</a>
+  </p>
+
+  <div class="footer">
+    <p>VNPAY 2025</p>
+  </div>
+</div>
+</body>
+</html>

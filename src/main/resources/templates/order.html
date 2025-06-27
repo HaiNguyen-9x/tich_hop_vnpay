@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+    <link rel="stylesheet" th:href="@{/css/order.css}">
+
+</head>
+<body>
+  <form id="paymentForm" method="post" th:action="@{/api/vnp/order}" th:object="${requestDto}">
+    <div class="container">
+      <div class="nav">
+        <p>VNPAY DEMO</p>
+        <a href="http://localhost:8080/api/vnp/payments">Danh sách</a>
+        <a href="http://localhost:8080/api/vnp/createOrder">Tạo mới</a>
+        <a href="http://localhost:8080/api/vnp/createRefund">Hoàn trả</a>
+        <a href="http://localhost:8080/api/vnp/createquery">Truy vấn</a>
+      </div>
+
+      <h3>Tạo mới đơn hàng</h3>
+
+      <div class="order-details">
+        <div class="form-group">
+          <label class="text-14px">Loại hàng hóa</label>
+          <select th:field="*{orderType}" class="text-16px padding-8-12 width-100 text-box-color border-radius">
+            <option th:each="order : ${listOrderType}" th:value="${order}" th:text="${order}"></option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="text-14px">Số tiền</label>
+          <input type="number" th:field="*{amount}"  class="text-16px padding-8-12 width-100 text-box-color border-radius border-box"/>
+          <span id="amountError" style="font-size: 14.4px; color: red;"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="text-14px">Nội dung thanh toán</label>
+          <textarea th:field="*{orderInfo}"  class="text-16px padding-8-12 width-100 text-box-color border-radius border-box"
+              rows="2" cols="20"></textarea>
+          <span id="orderInfoError" style="font-size: 14.4px; color: red;"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="text-14px">Ngân hàng</label>
+          <select th:field="*{bankCode}"  class="text-16px padding-8-12 width-100 text-box-color border-radius">
+            <option th:value=null>Không chọn </option>
+            <option th:value="QRONLY">Thanh toan QRONLY</option>
+            <option th:value="MBAPP">Ung dung MobileBanking</option>
+            <option th:value="VNPAYQR">VNPAYQR</option>
+            <option th:value="VNBANK">LOCAL BANK</option>
+            <option th:value="IB">INTERNET BANKING</option>
+            <option th:value="ATM">ATM CARD</option>
+            <option th:value="INTCARD">INTERNATIONAL CARD</option>
+            <option th:value="VISA">VISA</option>
+            <option th:value="MASTERCARD"> MASTERCARD</option>
+            <option th:value="JCB">JCB</option>
+            <option th:value="UPI">UPI</option>
+            <option th:value="VIB">VIB</option>
+            <option th:value="VIETCAPITALBANK">VIETCAPITALBANK</option>
+            <option th:value="SCB">Ngan hang SCB</option>
+            <option th:value="NCB">Ngan hang NCB</option>
+            <option th:value="SACOMBANK">Ngan hang SacomBank  </option>
+            <option th:value="EXIMBANK">Ngan hang EximBank </option>
+            <option th:value="MSBANK">Ngan hang MSBANK </option>
+            <option th:value="NAMABANK">Ngan hang NamABank </option>
+            <option th:value="VNMART"> Vi dien tu VnMart</option>
+            <option th:value="VIETINBANK">Ngan hang Vietinbank  </option>
+            <option th:value="VIETCOMBANK">Ngan hang VCB </option>
+            <option th:value="HDBANK">Ngan hang HDBank</option>
+            <option th:value="DONGABANK">Ngan hang Dong A</option>
+            <option th:value="TPBANK">Ngân hàng TPBank </option>
+            <option th:value="OJB">Ngân hàng OceanBank</option>
+            <option th:value="BIDV">Ngân hàng BIDV </option>
+            <option th:value="TECHCOMBANK">Ngân hàng Techcombank </option>
+            <option th:value="VPBANK">Ngan hang VPBank </option>
+            <option th:value="AGRIBANK">Ngan hang Agribank </option>
+            <option th:value="MBBANK">Ngan hang MBBank </option>
+            <option th:value="ACB">Ngan hang ACB </option>
+            <option th:value="OCB">Ngan hang OCB </option>
+            <option th:value="IVB">Ngan hang IVB </option>
+            <option th:value="SHB">Ngan hang SHB </option>
+            <option th:value="APPLEPAY">Apple Pay </option>
+            <option th:value="GOOGLEPAY">Google Pay </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="text-14px">Ngôn ngữ</label>
+          <select th:field="*{locale}" class="text-16px padding-8-12 width-100 text-box-color border-radius">
+            <option th:value="vn">Tiếng Việt</option>
+            <option th:value="en">English</option>
+          </select>
+        </div>
+
+        <button type="submit" class="text-16px">Thanh toán Redirect</button>
+      </div>
+
+      <div class="footer text-14px">
+        <p>VNPAY 2025</p>
+      </div>
+    </div>
+  </form>
+
+  <script src="/js/order.js"></script>
+</body>
+</html>
