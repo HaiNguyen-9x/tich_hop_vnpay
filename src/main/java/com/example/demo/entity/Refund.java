@@ -16,6 +16,7 @@ public class Refund {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String refundType;
     private Long amount;
     private String transactionInfo;
     private String timestamp;

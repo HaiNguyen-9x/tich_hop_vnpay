@@ -8,9 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
-    Payment findByTxnRef(String txnRef);
-    boolean existsByTxnRef(String txnRef);
-
     @Query("SELECT p FROM Payment p WHERE CONCAT('', p.id) LIKE %:pageSearch%")
     Page<Payment> searchByIdLike(@Param("pageSearch") String pageSearch, Pageable pageable);
 }

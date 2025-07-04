@@ -37,6 +37,8 @@ dependencies {
 	runtimeOnly("com.mysql:mysql-connector-j")
 	// https://mvnrepository.com/artifact/com.google.code.gson/gson
 	implementation("com.google.code.gson:gson:2.13.1")
+	// https://mvnrepository.com/artifact/org.springframework/spring-webflux
+	implementation("org.springframework:spring-webflux")
 }
 
 tasks.withType<Test> {

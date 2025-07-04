@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Log4j2
 @ControllerAdvice
@@ -19,7 +20,7 @@ public class HandleException {
         log.error("Validation failed: {}", methodArgumentNotValidException.getMessage());
         DetailsException exception = new DetailsException(
                 new Date(),
-                methodArgumentNotValidException.getFieldError().getDefaultMessage(),
+                Objects.requireNonNull(methodArgumentNotValidException.getFieldError()).getDefaultMessage(),
                 webRequest.getDescription(false)
         );
         return new ResponseEntity<>(exception, HttpStatus.BAD_REQUEST);
